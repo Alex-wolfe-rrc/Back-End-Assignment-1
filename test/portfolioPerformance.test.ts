@@ -68,6 +68,8 @@ describe("calculatePortfolioPerformance", () => {
     });
 });
 
+// API tests
+
 describe("GET /api/v1/health", () => {
     it("should return server health status", async () => {
         // create GET request to health endpoint
