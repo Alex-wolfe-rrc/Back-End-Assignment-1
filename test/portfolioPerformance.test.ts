@@ -7,14 +7,64 @@ import { Response } from "supertest";
 import app from "../src/app";
 // import express application and server
 
-describe("GET /", () => {
-    it("should return Hello, world!", async () => {
-        // create GET request to root endpoint
-        const response: Response = await request(app).get("/");
+import { calculatePortfolioPerformance } from "../src/portfolio/portfolioPerformance";
 
-        // assert that response status is OK, response text is "Hello, world!"
-        expect(response.status).toBe(200);
-        expect(response.text).toBe("Hello, world!");
+describe("calculatePortfolioPerformance", () => {
+    it("should calculate excellent portfolio performance", () => {
+        // Arrange
+        const initialInvestment = 10000;
+        const currentValue = 16000;
+
+        // Act
+        const result = calculatePortfolioPerformance(
+            initialInvestment,
+            currentValue
+        );
+
+        // Assert
+        expect(result.profitOrLoss).toBe(6000);
+        expect(result.percentageChange).toBe(60);
+        expect(result.performanceSummary).toBe(
+            "Excellent performance! Your investments are doing great."
+        );
+    });
+
+    it("should identify no change in portfolio performance", () => {
+        // Arrange
+        const initialInvestment = 10000;
+        const currentValue = 10000;
+
+        // Act
+        const result = calculatePortfolioPerformance(
+            initialInvestment,
+            currentValue
+        );
+
+        // Assert
+        expect(result.profitOrLoss).toBe(0);
+        expect(result.percentageChange).toBe(0);
+        expect(result.performanceSummary).toBe(
+            "No change. Your portfolio is holding steady."
+        );
+    });
+
+    it("should calculate minor portfolio losses", () => {
+        // Arrange
+        const initialInvestment = 10000;
+        const currentValue = 9000;
+
+        // Act
+        const result = calculatePortfolioPerformance(
+            initialInvestment,
+            currentValue
+        );
+
+        // Assert
+        expect(result.profitOrLoss).toBe(-1000);
+        expect(result.percentageChange).toBe(-10);
+        expect(result.performanceSummary).toBe(
+            "Minor loss. Stay calm and review your options."
+        );
     });
 });
 
