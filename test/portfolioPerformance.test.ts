@@ -83,3 +83,26 @@ describe("GET /api/v1/health", () => {
         expect(response.body).toHaveProperty("version");
     });
 });
+
+describe("GET /api/v1/portfolio/performance", () => {
+    it("should return portfolio performance", async () => {
+        // Arrange
+        const initialInvestment = 10000;
+        const currentValue = 16000;
+
+        // Act
+        const response: Response = await request(app).get(
+            `/api/v1/portfolio/performance?initialInvestment=${initialInvestment}&currentValue=${currentValue}`
+        );
+
+        // Assert
+        expect(response.status).toBe(200);
+        expect(response.body.initialInvestment).toBe(10000);
+        expect(response.body.currentValue).toBe(16000);
+        expect(response.body.profitOrLoss).toBe(6000);
+        expect(response.body.percentageChange).toBe(60);
+        expect(response.body.performanceSummary).toBe(
+            "Excellent performance! Your investments are doing great."
+        );
+    });
+});
